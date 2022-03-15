@@ -1,5 +1,24 @@
 {% extends 'main.html' %}
 
 {% block content %}
+<h1>{{message}}</h1>
 <p>This is where the projects would be listed</p>
+
+{% if no > 10 %}
+<p>Number {{no}} is greater than 10</p>
+{% elif no == 10 %}
+<p>Number {{no}} is equal to 10</p>
+{% else %}
+<p>Number {{no}} is less than 10</p>
+{% endif %}
+
+<ul>
+    {% for project in projects %}
+    <li>
+        {{project.id}}. -- {{project.title}} -- {{project.description}} -- <a
+            href="{% url 'project' project.id %}">View here</a>
+    </li>
+    {% endfor %}
+</ul>
+
 {% endblock content %}
