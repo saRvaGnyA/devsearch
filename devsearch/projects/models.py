@@ -1,6 +1,7 @@
 from tkinter import CASCADE
 import uuid
 from django.db import models
+from sqlalchemy import null
 
 # Create your models here.
 
@@ -10,6 +11,8 @@ class Project(models.Model):
     description = models.TextField(null=True, blank=True)
     id = models.UUIDField(default=uuid.uuid4,
                           primary_key=True, editable=False, unique=True)
+    featured_image = models.ImageField(
+        null=True, blank=True, default="default.jpg")
     demo_link = models.TextField(null=True, blank=True, max_length=2000)
     source_link = models.TextField(null=True, blank=True, max_length=2000)
     created = models.DateTimeField(auto_now_add=True)

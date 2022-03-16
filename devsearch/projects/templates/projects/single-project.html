@@ -2,10 +2,15 @@
 
 {% block content %}
 <p>This is where an individual project would be listed</p>
+
+<img height="200" width="200" src="{{project.featured_image.url}}" alt="Project Image">
+
 <h2>{{project.title}}</h2>
 <p>{{project.description}}</p>
 <hr>
+
 {% for tag in project.tags.all %}
 <span style="border: 1px solid red;">{{tag}}</span>
 {% endfor %}
+
 {% endblock content %}
