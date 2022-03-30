@@ -2,11 +2,15 @@ from tkinter import CASCADE
 import uuid
 from django.db import models
 from sqlalchemy import null
+from users.models import Profile
 
 # Create your models here.
 
 
 class Project(models.Model):
+    # many-to-one relation to a owner user using a foreign key relationship
+    owner = models.ForeignKey(
+        Profile, null=True, blank=True, on_delete=models.SET_NULL)
     title = models.CharField(max_length=200)
     description = models.TextField(null=True, blank=True)
     id = models.UUIDField(default=uuid.uuid4,
