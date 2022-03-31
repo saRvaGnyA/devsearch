@@ -2,6 +2,8 @@ from distutils.command.upload import upload
 from django.db import models
 import uuid
 from django.contrib.auth.models import User  # the default user model for auth
+from django.db.models.signals import post_save, post_delete
+# from django.dispatch import receiver
 # Create your models here.
 
 
@@ -30,7 +32,7 @@ class Profile(models.Model):
                           primary_key=True, unique=True, editable=False)
 
     def __str__(self) -> str:
-        return str(self.user.username)
+        return str(self.username)
 
 
 class Skill(models.Model):
@@ -43,3 +45,5 @@ class Skill(models.Model):
 
     def __str__(self) -> str:
         return str(self.name)
+
+
