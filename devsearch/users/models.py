@@ -17,6 +17,7 @@ class Profile(models.Model):
     profile_image = models.ImageField(
         null=True, blank=True, upload_to='profiles/', default='profiles/user-default.png')
     username = models.CharField(max_length=200, blank=True, null=True)
+    location = models.CharField(max_length=200, blank=True, null=True)
     # we've already installed Pillow library for this
     # we want to configure where these profile pics will be stored
     social_github = models.CharField(max_length=200, blank=True, null=True)
@@ -30,3 +31,15 @@ class Profile(models.Model):
 
     def __str__(self) -> str:
         return str(self.user.username)
+
+
+class Skill(models.Model):
+    owner = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, null=True, blank=True)
+    name = models.CharField(max_length=200, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+    id = models.UUIDField(default=uuid.uuid4,
+                          primary_key=True, unique=True, editable=False)
+
+    def __str__(self) -> str:
+        return str(self.name)
