@@ -4,10 +4,14 @@ from django.contrib.auth.models import User  # the default user model for auth
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Profile
+from .forms import CustomUserCreationForm
 # Create your views here.
 
 
 def loginUser(request):
+    page = 'login'
+    context = {"page": page}
+
     # DO NOT CALL THIS FUNCTION `login` since we'd use Django's built-in authentication login function with the same name ahead
 
     if request.user.is_authenticated:
@@ -40,13 +44,42 @@ def loginUser(request):
             # we'll display a flash message to the user later
             messages.error(request, 'Username OR password do not match')
 
-    return render(request, 'users/login_register.html')
+    return render(request, 'users/login_register.html', context)
 
 
 def logoutUser(request):
     logout(request)  # deletes the session
     messages.success(request, 'User was successfully logged out')
     return redirect('login')
+
+
+def registerUser(request):
+    page = 'register'
+    form = CustomUserCreationForm()
+    context = {"page": page, "form": form}
+
+    if request.method == 'POST':
+        # just like model forms
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            # form.save() - hold the commit for some validations
+            user = form.save(commit=False)
+
+            # we want to ensure that the username is all lowercase
+            user.username = user.username.lower()
+            user.save()
+
+            # display a flash message
+            messages.success(request, 'User successfully registered')
+
+            # also log in the user rightaway, we already have the user instance
+            login(request, user)  # creates a session
+            return redirect('profiles')
+
+        else:
+            messages.error(request, "Error occured during registration")
+
+    return render(request, 'users/login_register.html', context)
 
 
 def profiles(request):
