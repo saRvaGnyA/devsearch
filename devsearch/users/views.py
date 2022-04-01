@@ -56,7 +56,6 @@ def logoutUser(request):
 def registerUser(request):
     page = 'register'
     form = CustomUserCreationForm()
-    context = {"page": page, "form": form}
 
     if request.method == 'POST':
         # just like model forms
@@ -78,6 +77,8 @@ def registerUser(request):
 
         else:
             messages.error(request, "Error occured during registration")
+
+    context = {"page": page, "form": form}
 
     return render(request, 'users/login_register.html', context)
 
